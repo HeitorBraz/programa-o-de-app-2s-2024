@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversão de Temperatura</title>
+</head>
+<body>
+    <h1>Conversão de Temperatura</h1>
+    <label for="valor">Temperatura:</label>
+    <input type="number" id="valor" placeholder="Digite o valor">
+
+    <label for="entrada">De:</label>
+    <select id="entrada">
+        <option value="Celsius">Celsius</option>
+        <option value="Kelvin">Kelvin</option>
+        <option value="Fahrenheit">Fahrenheit</option>
+    </select>
+
+    <label for="saida">Para:</label>
+    <select id="saida">
+        <option value="Celsius">Celsius</option>
+        <option value="Kelvin">Kelvin</option>
+        <option value="Fahrenheit">Fahrenheit</option>
+    </select>
+
+    <button onclick="converter()">Converter</button>
+
+    <h2>Resultado:</h2>
+    <p id="resultado"></p>
+
+    <script src="conversao.js"></script>
+</body>
+</html>

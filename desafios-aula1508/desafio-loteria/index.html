@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteio de Números da Loteria</title>
+</head>
+<body>
+    <h1>Sorteio de Números da Loteria</h1>
+    <label for="tipoJogo">Escolha o tipo de jogo:</label>
+    <select id="tipoJogo">
+        <option value="Lotofacil">Lotofácil</option>
+        <option value="Sena">Sena</option>
+        <option value="Quina">Quina</option>
+    </select>
+    <button onclick="sortear()">Sortear</button>
+
+    <h2>Números Sorteados:</h2>
+    <p id="resultado"></p>
+
+    <script src="loteria.js"></script>
+</body>
+</html>
