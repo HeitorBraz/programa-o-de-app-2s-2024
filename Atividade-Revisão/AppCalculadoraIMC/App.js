@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Slider from '@react-native-community/slider';
 
@@ -29,10 +29,20 @@ export default function App() {
   };
 
   const setCategoryAndColor = (bmiValue) => {
-    const category = BMICategories.find(cat => {
-      const [min, max] = cat.range.split(' - ').map(val => parseFloat(val) || 0);
-      return bmiValue >= min && (max ? bmiValue <= max : true);
-    });
+    let category;
+    if (bmiValue < 18.5) {
+      category = BMICategories[0];
+    } else if (bmiValue < 25) {
+      category = BMICategories[1];
+    } else if (bmiValue < 30) {
+      category = BMICategories[2];
+    } else if (bmiValue < 35) {
+      category = BMICategories[3];
+    } else if (bmiValue < 40) {
+      category = BMICategories[4];
+    } else {
+      category = BMICategories[5];
+    }
     setBMICategory(category);
   };
 
@@ -91,9 +101,17 @@ export default function App() {
         <View style={styles.categoriesCard}>
           <Text style={styles.categoriesTitle}>Categorias de IMC</Text>
           {BMICategories.map((cat, index) => (
-            <View key={index} style={styles.categoryRow}>
+            <View key={index} style={[
+              styles.categoryRow,
+              bmiCategory && bmiCategory.category === cat.category && styles.highlightedCategory
+            ]}>
               <View style={[styles.categoryColor, { backgroundColor: cat.color }]} />
-              <Text style={styles.categoryText}>{cat.range}: {cat.category}</Text>
+              <Text style={[
+                styles.categoryText,
+                bmiCategory && bmiCategory.category === cat.category && styles.highlightedCategoryText
+              ]}>
+                {cat.range}: {cat.category}
+              </Text>
             </View>
           ))}
         </View>
@@ -221,5 +239,13 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 16,
     color: '#333',
+  },
+  highlightedCategory: {
+    backgroundColor: 'rgba(52, 152, 219, 0.2)',
+    borderRadius: 5,
+    padding: 5,
+  },
+  highlightedCategoryText: {
+    fontWeight: 'bold',
   },
 });
