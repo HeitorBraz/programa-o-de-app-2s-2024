@@ -6,7 +6,6 @@ import {
   TouchableOpacity, 
   Image, 
   ScrollView, 
-  Dimensions, 
   useWindowDimensions
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
@@ -20,13 +19,11 @@ export default function App() {
     topButtonSize: 0
   });
 
-  // Atualiza o layout baseado nas dimensões da tela
   useEffect(() => {
     const isPortrait = window.height > window.width;
     setOrientation(isPortrait ? 'portrait' : 'landscape');
 
-    // Calcula dimensões responsivas
-    const cardSpacing = window.width * 0.05; // 5% da largura para espaçamento
+    const cardSpacing = window.width * 0.05;
     const cardWidth = (window.width - (cardSpacing * 4)) / 3;
     const imageHeight = isPortrait ? 200 : 150;
     const topButtonSize = isPortrait ? 13 : 11;
@@ -76,7 +73,7 @@ export default function App() {
               styles.card,
               { 
                 width: layout.cardWidth,
-                height: orientation === 'portrait' ? 180 : 150 // Aumentei a altura aqui
+                height: orientation === 'portrait' ? 180 : 150
               }
             ]}
             onPress={() => alert(`${card.title} selecionado!`)}
@@ -123,6 +120,23 @@ export default function App() {
     ));
   };
 
+  const renderImageButtons = () => (
+    <>
+      <TouchableOpacity
+        style={[styles.imageTopButton, styles.imageTopLeftButton]}
+        onPress={() => alert('Botão superior esquerdo pressionado!')}
+      >
+        <Text style={styles.imageTopButtonText}>Esq</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.imageTopButton, styles.imageTopRightButton]}
+        onPress={() => alert('Botão superior direito pressionado!')}
+      >
+        <Text style={styles.imageTopButtonText}>Dir</Text>
+      </TouchableOpacity>
+    </>
+  );
+
   return (
     <View style={styles.container} onLayout={() => {}}>
       <StatusBar style="light" />
@@ -149,6 +163,7 @@ export default function App() {
             source={{ uri: 'https://picsum.photos/400/200' }}
             style={[styles.image, { height: layout.imageHeight }]}
           />
+          {renderImageButtons()}
           <TouchableOpacity
             style={[
               styles.imageButton,
@@ -252,6 +267,25 @@ const styles = StyleSheet.create({
   imageButtonText: {
     color: '#ffffff',
     fontWeight: '600',
+  },
+  imageTopButton: {
+    position: 'absolute',
+    top: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 15,
+  },
+  imageTopLeftButton: {
+    left: 10,
+  },
+  imageTopRightButton: {
+    right: 10,
+  },
+  imageTopButtonText: {
+    color: '#ffffff',
+    fontWeight: '600',
+    fontSize: 12,
   },
   textButtonContainer: {
     flexDirection: 'row',
