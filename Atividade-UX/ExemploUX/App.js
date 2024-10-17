@@ -25,7 +25,7 @@ export default function App() {
 
     const cardSpacing = window.width * 0.05;
     const cardWidth = (window.width - (cardSpacing * 4)) / 3;
-    const imageHeight = isPortrait ? 200 : 150;
+    const imageHeight = isPortrait ? 300 : 150;
     const topButtonSize = isPortrait ? 13 : 11;
 
     setLayout({
