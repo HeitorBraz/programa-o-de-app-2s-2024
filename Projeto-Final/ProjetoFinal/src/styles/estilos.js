@@ -32,6 +32,20 @@ export default StyleSheet.create({
     shadowRadius: 3,
     elevation: 2
   },
+  spinnerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 20
+  },
+  spinner: {
+    borderWidth: 4,
+    borderTopColor: '#43A047',
+    borderRightColor: '#A5D6A7',
+    borderBottomColor: '#66BB6A',
+    borderLeftColor: '#E8F5E9',
+    borderRadius: 50
+  },
   itemPlanta: {
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',

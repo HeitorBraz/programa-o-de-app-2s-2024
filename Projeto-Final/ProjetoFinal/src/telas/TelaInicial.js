@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Image, SafeAreaView, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoadingSpinner from '../components/LoadingSpinner';
 import styles from '../styles/estilos';
 
 export default function TelaInicial({ navigation }) {
   const [plantas, setPlantas] = useState([]);
+  const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
     const carregarPlantas = async () => {
       try {
+        setCarregando(true);
         const plantasSalvas = await AsyncStorage.getItem('plantas');
         if (plantasSalvas) setPlantas(JSON.parse(plantasSalvas));
       } catch (erro) {
         console.error('Erro ao carregar plantas', erro);
+        Alert.alert('Erro', 'Não foi possível carregar as plantas');
+      } finally {
+        setCarregando(false);
       }
     };
 
     const unsubscribe = navigation.addListener('focus', carregarPlantas);
+    carregarPlantas(); // Initial load
     return unsubscribe;
   }, [navigation]);
 
@@ -53,6 +60,14 @@ export default function TelaInicial({ navigation }) {
       ]
     );
   };
+
+  if (carregando) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <LoadingSpinner size={70} />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>

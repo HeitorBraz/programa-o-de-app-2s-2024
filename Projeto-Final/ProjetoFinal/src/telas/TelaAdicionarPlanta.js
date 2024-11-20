@@ -4,11 +4,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import * as Notifications from 'expo-notifications';
 import styles from '../styles/estilos';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function TelaAdicionarPlanta({ navigation }) {
   const [nomePlanta, setNomePlanta] = useState('');
   const [frequenciaRega, setFrequenciaRega] = useState('');
   const [imagemPlanta, setImagemPlanta] = useState(null);
+  const [carregando, setCarregando] = useState(false);
 
   const selecionarImagem = async () => {
     let resultado = await ImagePicker.launchImageLibraryAsync({
@@ -34,6 +36,8 @@ export default function TelaAdicionarPlanta({ navigation }) {
       };
 
       try {
+        setCarregando(true);
+
         const plantasSalvas = await AsyncStorage.getItem('plantas');
         const plantas = plantasSalvas ? JSON.parse(plantasSalvas) : [];
         
@@ -54,6 +58,8 @@ export default function TelaAdicionarPlanta({ navigation }) {
       } catch (erro) {
         console.error('Erro ao salvar planta', erro);
         Alert.alert('Erro', 'Não foi possível salvar a planta');
+      } finally {
+        setCarregando(false);
       }
     } else {
       Alert.alert('Erro', 'Por favor, insira o nome da planta');
@@ -90,9 +96,13 @@ export default function TelaAdicionarPlanta({ navigation }) {
           <Image source={{ uri: imagemPlanta }} style={styles.imagemSelecionada} />
         )}
         
-        <TouchableOpacity style={styles.botao} onPress={adicionarPlanta}>
-          <Text style={styles.textoBotao}>Adicionar Planta</Text>
-        </TouchableOpacity>
+        {carregando ? (
+          <LoadingSpinner />
+        ) : (
+          <TouchableOpacity style={styles.botao} onPress={adicionarPlanta}>
+            <Text style={styles.textoBotao}>Adicionar Planta</Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

@@ -4,12 +4,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import * as Notifications from 'expo-notifications';
 import styles from '../styles/estilos';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function TelaDetalhesPlanta({ route, navigation }) {
   const { planta } = route.params;
   const [nomePlanta, setNomePlanta] = useState(planta.nome);
   const [frequenciaRega, setFrequenciaRega] = useState(planta.frequenciaRega.toString());
   const [imagemPlanta, setImagemPlanta] = useState(planta.imagem);
+  const [carregando, setCarregando] = useState(false);
 
   const selecionarImagem = async () => {
     let resultado = await ImagePicker.launchImageLibraryAsync({
@@ -27,6 +29,8 @@ export default function TelaDetalhesPlanta({ route, navigation }) {
   const salvarAlteracoes = async () => {
     if (nomePlanta.trim()) {
       try {
+        setCarregando(true);
+
         const plantasSalvas = await AsyncStorage.getItem('plantas');
         let plantas = plantasSalvas ? JSON.parse(plantasSalvas) : [];
         
@@ -59,6 +63,8 @@ export default function TelaDetalhesPlanta({ route, navigation }) {
       } catch (erro) {
         console.error('Erro ao atualizar planta', erro);
         Alert.alert('Erro', 'Não foi possível atualizar a planta');
+      } finally {
+        setCarregando(false);
       }
     } else {
       Alert.alert('Erro', 'Por favor, insira o nome da planta');
@@ -107,13 +113,17 @@ export default function TelaDetalhesPlanta({ route, navigation }) {
           </Text>
         </View>
         
-        <TouchableOpacity 
-          style={styles.botao} 
-          onPress={salvarAlteracoes}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.textoBotao}>Salvar Alterações</Text>
-        </TouchableOpacity>
+        {carregando ? (
+          <LoadingSpinner />
+        ) : (
+          <TouchableOpacity 
+            style={styles.botao} 
+            onPress={salvarAlteracoes}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.textoBotao}>Salvar Alterações</Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
