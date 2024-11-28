@@ -23,7 +23,7 @@ export default function TelaInicial({ navigation }) {
     };
 
     const unsubscribe = navigation.addListener('focus', carregarPlantas);
-    carregarPlantas(); // Initial load
+    carregarPlantas();
     return unsubscribe;
   }, [navigation]);
 
