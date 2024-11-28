@@ -53,6 +53,7 @@ export default function TelaAdicionarPlanta({ navigation }) {
             seconds: novaPlanta.frequenciaRega * 24 * 60 * 60,
           }
         });
+        console.log("Notificação agendada para planta:", novaPlanta.nome);
 
         navigation.goBack();
       } catch (erro) {
